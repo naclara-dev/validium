@@ -13,13 +13,17 @@ public class FieldValidator<R> {
         this.validator = validator;
     }
 
-    public FieldValidator<R> field(String name, R value) {
+    public <A> FieldValidator<A> field(String name, A value) {
         return validator.field(name, value);
+    }
+
+    public Boolean validate() {
+        return validator.validate();
     }
 
     public FieldValidator<R> notNull() {
         if (value == null) {
-            new ValidationError(name, "Cannot be null.");
+            validator.addError(name, "Cannot be null.");
         }
 
         return this;
@@ -32,7 +36,7 @@ public class FieldValidator<R> {
         if (value instanceof String text) {
             return text;
         } else {
-            String message = String.format("Field '%s' must be a String to use this validation", name);
+            String message = String.format("Field '%s' must be a String to use this validation.", name);
             throw new IllegalArgumentException(message);
         }
     }
@@ -77,7 +81,7 @@ public class FieldValidator<R> {
         if (value instanceof Number number) {
             return number;
         } else {
-            String message = String.format("Field '%s' must be a number to use this validation", name);
+            String message = String.format("Field '%s' must be a number to use this validation.", name);
             throw new IllegalArgumentException(message);
         }
     }
@@ -87,7 +91,7 @@ public class FieldValidator<R> {
             return this;
         }
         if (requireNumber().doubleValue() < min.doubleValue()) {
-            validator.addError(name, String.format("Must be at least %d", min));
+            validator.addError(name, String.format("Must be at least %d.", min));
         }
 
         return this;
@@ -98,7 +102,7 @@ public class FieldValidator<R> {
             return this;
         }
         if (requireNumber().doubleValue() > max.doubleValue()) {
-            validator.addError(name, String.format("Must be at most", max));
+            validator.addError(name, String.format("Must be at most %d.", max));
         }
 
         return this;

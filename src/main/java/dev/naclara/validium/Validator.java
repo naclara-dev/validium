@@ -24,9 +24,9 @@ public class Validator<T> {
         errors.add(new ValidationError(field, message));
     }
 
-    public T validate() {
+    public Boolean validate() {
         if (errors.isEmpty()) {
-            return object;
+            return true;
         } else {
             throw new ValidationException(errors);
         }
