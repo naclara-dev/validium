@@ -13,6 +13,10 @@ public class FieldValidator<R> {
         this.validator = validator;
     }
 
+    public FieldValidator<R> field(String name, R value) {
+        return validator.field(name, value);
+    }
+
     public FieldValidator<R> notNull() {
         if (value == null) {
             new ValidationError(name, "Cannot be null.");
