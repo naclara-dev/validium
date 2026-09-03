@@ -24,5 +24,11 @@ public class Validator<T> {
         errors.add(new ValidationError(field, message));
     }
 
-
+    public T validate() {
+        if (errors.isEmpty()) {
+            return object;
+        } else {
+            throw new ValidationException(errors);
+        }
+    }
 }
