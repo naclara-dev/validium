@@ -1,26 +1,55 @@
 package dev.naclara.validium;
 
-import java.lang.reflect.Field;
-
+/**
+ * Validates a single field inside a validation chain.
+ *
+ * @param <R> type of the field value being validated
+ */
 public class FieldValidator<R> {
     Validator<?> validator;
     String name;
     R value;
 
+    /**
+     * Creates a field validator linked to an existing validation context.
+     *
+     * @param name field name used in validation errors
+     * @param value field value to validate
+     * @param validator validation context that collects errors
+     */
     public FieldValidator(String name, R value, Validator<?> validator) {
         this.name = name;
         this.value = value;
         this.validator = validator;
     }
 
+    /**
+     * Selects another field value to validate in the same validation chain.
+     *
+     * @param name field name used in validation errors
+     * @param value field value to validate
+     * @param <A> type of the next field value
+     * @return field validator for the selected field
+     */
     public <A> FieldValidator<A> field(String name, A value) {
         return validator.field(name, value);
     }
 
+    /**
+     * Finishes the validation chain.
+     *
+     * @return true when no validation errors were collected
+     * @throws ValidationException when one or more validation errors were collected
+     */
     public Boolean validate() {
         return validator.validate();
     }
 
+    /**
+     * Validates that the field value is not null.
+     *
+     * @return current field validator
+     */
     public FieldValidator<R> notNull() {
         if (value == null) {
             validator.addError(name, "Cannot be null.");
@@ -41,6 +70,12 @@ public class FieldValidator<R> {
         }
     }
 
+    /**
+     * Validates that the string field is not empty or blank.
+     *
+     * @return current field validator
+     * @throws IllegalArgumentException when the field value is not a string
+     */
     public FieldValidator<R> notEmpty() {
         if (value == null) {
             return this;
@@ -52,6 +87,13 @@ public class FieldValidator<R> {
         return this;
     }
 
+    /**
+     * Validates that the string field has at least the given length.
+     *
+     * @param size minimum accepted string length
+     * @return current field validator
+     * @throws IllegalArgumentException when the field value is not a string
+     */
     public FieldValidator<R> minLength(Integer size) {
         if (value == null) {
             return this;
@@ -63,6 +105,13 @@ public class FieldValidator<R> {
         return this;
     }
 
+    /**
+     * Validates that the string field has at most the given length.
+     *
+     * @param size maximum accepted string length
+     * @return current field validator
+     * @throws IllegalArgumentException when the field value is not a string
+     */
     public FieldValidator<R> maxLength(Integer size) {
         if (value == null) {
             return this;
@@ -86,6 +135,13 @@ public class FieldValidator<R> {
         }
     }
 
+    /**
+     * Validates that the numeric field is greater than or equal to the given value.
+     *
+     * @param min minimum accepted value
+     * @return current field validator
+     * @throws IllegalArgumentException when the field value is not a number
+     */
     public FieldValidator<R> min(Integer min) {
         if (value == null) {
             return this;
@@ -97,6 +153,13 @@ public class FieldValidator<R> {
         return this;
     }
 
+    /**
+     * Validates that the numeric field is lower than or equal to the given value.
+     *
+     * @param max maximum accepted value
+     * @return current field validator
+     * @throws IllegalArgumentException when the field value is not a number
+     */
     public FieldValidator<R> max(Integer max) {
         if (value == null) {
             return this;

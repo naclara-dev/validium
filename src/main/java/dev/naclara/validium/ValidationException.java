@@ -4,13 +4,20 @@ import java.util.List;
 
 import static java.lang.System.lineSeparator;
 
+/**
+ * Exception thrown when a validation chain finishes with one or more errors.
+ */
 public class ValidationException extends RuntimeException {
-    private static ValidationError error;
     List<ValidationError> errors;
 
+    /**
+     * Creates a validation exception with the collected errors.
+     *
+     * @param errors validation errors collected during validation
+     */
     public ValidationException(List<ValidationError> errors) {
-        this.errors = errors;
         super(buildMessage(errors));
+        this.errors = errors;
     }
 
     private static String buildMessage(List<ValidationError> errors) {
