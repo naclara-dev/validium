@@ -7,6 +7,32 @@
     <groupId>dev.naclara</groupId>
     <artifactId>validium</artifactId>
     <version>0.1.0</version>
+    <name>Validium</name>
+    <description>A lightweight Java validation library with a fluent API for validating object fields.</description>
+    <url>https://github.com/naclara-dev/validium</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/license/mit</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>naclara-dev</id>
+            <name>Naclara</name>
+            <url>https://github.com/naclara-dev</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/naclara-dev/validium.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/naclara-dev/validium.git</developerConnection>
+        <url>https://github.com/naclara-dev/validium</url>
+        <tag>v0.1.0</tag>
+    </scm>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
