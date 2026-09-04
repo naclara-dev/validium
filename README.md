@@ -9,19 +9,13 @@ Validium is a lightweight Java validation library with a fluent API for validati
 
 ## Installation
 
-Package publishing is not configured yet. For now, Validium can be used by cloning the repository and installing it locally:
-
-```bash
-mvn install
-```
-
-After installing it locally, add the dependency to your Maven project:
+Validium is available on Maven Central. Add the dependency to your Maven project:
 
 ```xml
 <dependency>
     <groupId>dev.naclara</groupId>
     <artifactId>validium</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
 </dependency>
 ```
 
@@ -80,4 +74,4 @@ src/main/java/dev/naclara/validium/examples
 
 ## License
 
-No license has been defined yet.
+Under MIT license.
