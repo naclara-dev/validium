@@ -98,12 +98,12 @@ public class FieldValidator<R> {
      *
      * @return current field validator
      */
-    public FieldValidator<R> notNull() {
+    public FieldValidator<R> required() {
         if (!fieldFound) {
             return this;
         }
         if (value == null) {
-            error = validator.addError(name, "Cannot be null.");
+            error = validator.addError(name, "Field is required.");
         }
 
         return this;
