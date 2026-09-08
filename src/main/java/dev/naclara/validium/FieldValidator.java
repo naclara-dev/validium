@@ -7,6 +7,7 @@ package dev.naclara.validium;
  */
 public class FieldValidator<R> {
     Validator<?> validator;
+    ValidationError error;
     String name;
     R value;
     boolean fieldFound;
@@ -26,11 +27,18 @@ public class FieldValidator<R> {
         this.fieldFound = fieldFound;
     }
 
+    public FieldValidator<R> onFail(String message) {
+        if (error != null) {
+            error.setMessage(message);
+        }
+
+        return this;
+    }
+
     /**
      * Selects another field value to validate in the same validation chain.
      *
      * @param name field name used in validation errors
-     * @param value field value to validate
      * @param <A> type of the next field value
      * @return field validator for the selected field
      */
@@ -58,7 +66,7 @@ public class FieldValidator<R> {
             return this;
         }
         if (value == null) {
-            validator.addError(name, "Cannot be null.");
+            error = validator.addError(name, "Cannot be null.");
         }
 
         return this;
@@ -87,7 +95,7 @@ public class FieldValidator<R> {
             return this;
         }
         if (requireString().isBlank()) {
-            validator.addError(name, "Cannot be blank.");
+            error = validator.addError(name, "Cannot be blank.");
         }
 
         return this;
@@ -104,7 +112,7 @@ public class FieldValidator<R> {
             return this;
         }
         if (requireString().isEmpty()) {
-            validator.addError(name, "Cannot be empty.");
+            error = validator.addError(name, "Cannot be empty.");
         }
 
         return this;
@@ -122,7 +130,7 @@ public class FieldValidator<R> {
             return this;
         }
         if (requireString().length() < size) {
-            validator.addError(name, String.format("Must be at least %d characters.", size));
+            error = validator.addError(name, String.format("Must be at least %d characters.", size));
         }
 
         return this;
@@ -140,7 +148,7 @@ public class FieldValidator<R> {
             return this;
         }
         if (requireString().length() > size) {
-            validator.addError(name, String.format("Must be at most %d characters.", size));
+            error = validator.addError(name, String.format("Must be at most %d characters.", size));
         }
 
         return this;
@@ -170,7 +178,7 @@ public class FieldValidator<R> {
             return this;
         }
         if (requireNumber().doubleValue() < min.doubleValue()) {
-            validator.addError(name, String.format("Must be at least %d.", min));
+            error = validator.addError(name, String.format("Must be at least %d.", min));
         }
 
         return this;
@@ -188,7 +196,7 @@ public class FieldValidator<R> {
             return this;
         }
         if (requireNumber().doubleValue() > max.doubleValue()) {
-            validator.addError(name, String.format("Must be at most %d.", max));
+            error = validator.addError(name, String.format("Must be at most %d.", max));
         }
 
         return this;

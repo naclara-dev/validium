@@ -64,9 +64,12 @@ public class Validator<T> {
      *
      * @param field field name related to the error
      * @param message validation error message
+     * @return new error
      */
-    public void addError(String field, String message) {
-        errors.add(new ValidationError(field, message));
+    public ValidationError addError(String field, String message) {
+        ValidationError error = new ValidationError(field, message);
+        errors.add(error);
+        return error;
     }
 
     /**

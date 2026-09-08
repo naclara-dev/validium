@@ -25,7 +25,7 @@ public class ValidationException extends RuntimeException {
         message.append(lineSeparator() + String.format("Validation failed with %d error(s):", errors.size()) + lineSeparator());
 
         errors.forEach(error -> {
-            message.append(error.field() + ": " + error.message() + lineSeparator());
+            message.append(error.getField() + ": " + error.getMessage() + lineSeparator());
         });
 
         return message.toString();
