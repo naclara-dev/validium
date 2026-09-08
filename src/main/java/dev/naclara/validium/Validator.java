@@ -3,6 +3,7 @@ package dev.naclara.validium;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Entry point for validating an object through a fluent field-based API.
@@ -31,7 +32,10 @@ public class Validator<T> {
      * @return validator instance for the object
      */
     public static <T> Validator<T> of(T object) {
-        return new Validator<>(object);
+        return new Validator<>(Objects.requireNonNull(
+                object,
+                () -> "Validium cannot validate a null object."
+        ));
     }
 
     /**

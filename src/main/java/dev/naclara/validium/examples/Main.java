@@ -6,7 +6,7 @@ public class Main {
     static void main(String[] args) {
         User user = new User(null, 22, "contato@naclara.dev");
 
-        Validator.of(user)
+        Validator.of(null)
                 // Validium native validation
                 .field("name")
                     .required()
