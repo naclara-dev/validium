@@ -77,7 +77,24 @@ public class FieldValidator<R> {
     }
 
     /**
-     * Validates that the string field is not empty or blank.
+     * Validates that the string field is not blank.
+     *
+     * @return current field validator
+     * @throws IllegalArgumentException when the field value is not a string
+     */
+    public FieldValidator<R> notBlank() {
+        if (!fieldFound || value == null) {
+            return this;
+        }
+        if (requireString().isBlank()) {
+            validator.addError(name, "Cannot be blank.");
+        }
+
+        return this;
+    }
+
+    /**
+     * Validates that the string field is not empty.
      *
      * @return current field validator
      * @throws IllegalArgumentException when the field value is not a string
@@ -86,7 +103,7 @@ public class FieldValidator<R> {
         if (!fieldFound || value == null) {
             return this;
         }
-        if (requireString().strip().isEmpty()) {
+        if (requireString().isEmpty()) {
             validator.addError(name, "Cannot be empty.");
         }
 

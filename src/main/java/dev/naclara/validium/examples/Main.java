@@ -4,7 +4,7 @@ import dev.naclara.validium.Validator;
 
 public class Main {
     static void main(String[] args) {
-        User user = new User("Ana", 22);
+        User user = new User("  ", 22);
 
         Validator.of(user)
                 .field("name")
