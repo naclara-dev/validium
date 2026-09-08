@@ -1,5 +1,8 @@
 package dev.naclara.validium;
 
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 /**
  * Validates a single field inside a validation chain.
  *
@@ -59,6 +62,35 @@ public class FieldValidator<R> {
      */
     public Boolean validate() {
         return validator.validate();
+    }
+
+    /**
+     * Validates a field based on a custom test.
+     * @param test custom validation
+     * @param errorMessage custom error message in case the test fails
+     * @return current field validator
+     */
+    public FieldValidator<R> check(Predicate<R> test, String errorMessage) {
+        if (!fieldFound || value == null) {
+            return this;
+        }
+
+        boolean validated;
+
+        try {
+            validated = test.test(value);
+        } catch (RuntimeException exception) {
+            throw new IllegalArgumentException(
+                    "Invalid custom validation test for field '" + name + "'",
+                    exception
+            );
+        }
+
+        if (!validated) {
+            error = validator.addError(name, errorMessage);
+        }
+
+        return this;
     }
 
     /**
