@@ -1,7 +1,10 @@
 package dev.naclara.validium;
 
+import java.lang.reflect.Field;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Validates a single field inside a validation chain.
@@ -186,6 +189,23 @@ public class FieldValidator<R> {
         }
         if (requireString().length() > size) {
             error = validator.addError(name, String.format("Must be at most %d characters.", size));
+        }
+
+        return this;
+    }
+
+    /**
+     * Validates that the string field matches the given pattern.
+     * @param regex pattern to check
+     * @return current field validator
+     * @throws IllegalArgumentException when the field value is not a string
+     */
+    public FieldValidator<R> matches(String regex) {
+        if (!fieldFound || value == null) {
+            return this;
+        }
+        if (!Pattern.matches(regex, requireString())) {
+            error = validator.addError(name, String.format("Must match the pattern '%s'.", regex));
         }
 
         return this;

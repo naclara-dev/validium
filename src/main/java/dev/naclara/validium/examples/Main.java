@@ -4,9 +4,9 @@ import dev.naclara.validium.Validator;
 
 public class Main {
     static void main(String[] args) {
-        User user = new User(null, 22, "contato@naclara.dev");
+        User user = new User("Ana", 22, "contato@naclara.dev");
 
-        Validator.of(null)
+        Validator.of(user)
                 // Validium native validation
                 .field("name")
                     .required()
@@ -15,10 +15,7 @@ public class Main {
                     .min(21).onFail("Custom Message!")
                 // Custom validation + custom error message
                 .field("email")
-                    .check(
-                            value -> value instanceof String text && text.contains("@"),
-                            "E-mail must contains '@'."
-                    )
+                    .matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")
                 .validate();
 
     }
