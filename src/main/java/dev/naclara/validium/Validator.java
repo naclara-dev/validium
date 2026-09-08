@@ -1,5 +1,6 @@
 package dev.naclara.validium;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,12 +38,25 @@ public class Validator<T> {
      * Selects a field value to validate.
      *
      * @param name field name used in validation errors
-     * @param value field value to validate
      * @param <R> type of the field value
      * @return field validator for the selected field
      */
-    public <R> FieldValidator<R> field(String name, R value) {
-        return new FieldValidator<>(name, value, this);
+    public <R> FieldValidator<R> field(String name) {
+        try {
+            Class<?> objectClass = object.getClass();
+            Field field = objectClass.getDeclaredField(name);
+            field.setAccessible(true);
+
+            R value = (R) field.get(object);
+
+            return new FieldValidator<>(name, value, this, true);
+        } catch (NoSuchFieldException e) {
+            this.addError(name, "Field does not exist.");
+            return new FieldValidator<>(name, null, this, false);
+        } catch (IllegalAccessException e) {
+            this.addError(name, "Field cannot be accessed.");
+            return new FieldValidator<>(name, null, this, false);
+        }
     }
 
     /**

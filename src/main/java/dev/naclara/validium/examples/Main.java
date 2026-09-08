@@ -7,9 +7,9 @@ public class Main {
         User user = new User("Ana", 22);
 
         Validator.of(user)
-                .field("name", user.getName())
+                .field("name")
                     .notEmpty()
-                .field("age", user.getAge())
+                .field("age")
                     .min(18)
                 .validate();
 

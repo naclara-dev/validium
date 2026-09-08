@@ -9,6 +9,7 @@ public class FieldValidator<R> {
     Validator<?> validator;
     String name;
     R value;
+    boolean fieldFound;
 
     /**
      * Creates a field validator linked to an existing validation context.
@@ -16,11 +17,13 @@ public class FieldValidator<R> {
      * @param name field name used in validation errors
      * @param value field value to validate
      * @param validator validation context that collects errors
+     * @param fieldFound true when the field exists and is accessible
      */
-    public FieldValidator(String name, R value, Validator<?> validator) {
+    public FieldValidator(String name, R value, Validator<?> validator, boolean fieldFound) {
         this.name = name;
         this.value = value;
         this.validator = validator;
+        this.fieldFound = fieldFound;
     }
 
     /**
@@ -31,8 +34,8 @@ public class FieldValidator<R> {
      * @param <A> type of the next field value
      * @return field validator for the selected field
      */
-    public <A> FieldValidator<A> field(String name, A value) {
-        return validator.field(name, value);
+    public <A> FieldValidator<A> field(String name) {
+        return validator.field(name);
     }
 
     /**
@@ -51,6 +54,9 @@ public class FieldValidator<R> {
      * @return current field validator
      */
     public FieldValidator<R> notNull() {
+        if (!fieldFound) {
+            return this;
+        }
         if (value == null) {
             validator.addError(name, "Cannot be null.");
         }
@@ -77,7 +83,7 @@ public class FieldValidator<R> {
      * @throws IllegalArgumentException when the field value is not a string
      */
     public FieldValidator<R> notEmpty() {
-        if (value == null) {
+        if (!fieldFound || value == null) {
             return this;
         }
         if (requireString().strip().isEmpty()) {
@@ -95,7 +101,7 @@ public class FieldValidator<R> {
      * @throws IllegalArgumentException when the field value is not a string
      */
     public FieldValidator<R> minLength(Integer size) {
-        if (value == null) {
+        if (!fieldFound || value == null) {
             return this;
         }
         if (requireString().length() < size) {
@@ -113,7 +119,7 @@ public class FieldValidator<R> {
      * @throws IllegalArgumentException when the field value is not a string
      */
     public FieldValidator<R> maxLength(Integer size) {
-        if (value == null) {
+        if (!fieldFound || value == null) {
             return this;
         }
         if (requireString().length() > size) {
@@ -143,7 +149,7 @@ public class FieldValidator<R> {
      * @throws IllegalArgumentException when the field value is not a number
      */
     public FieldValidator<R> min(Integer min) {
-        if (value == null) {
+        if (!fieldFound || value == null) {
             return this;
         }
         if (requireNumber().doubleValue() < min.doubleValue()) {
@@ -161,7 +167,7 @@ public class FieldValidator<R> {
      * @throws IllegalArgumentException when the field value is not a number
      */
     public FieldValidator<R> max(Integer max) {
-        if (value == null) {
+        if (!fieldFound || value == null) {
             return this;
         }
         if (requireNumber().doubleValue() > max.doubleValue()) {
