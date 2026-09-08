@@ -43,11 +43,7 @@ public class Validator<T> {
      */
     public <R> FieldValidator<R> field(String name) {
         try {
-            Class<?> objectClass = object.getClass();
-            Field field = objectClass.getDeclaredField(name);
-            field.setAccessible(true);
-
-            R value = (R) field.get(object);
+            R value = (R) readField(name);
 
             return new FieldValidator<>(name, value, this, true);
         } catch (NoSuchFieldException e) {
@@ -84,5 +80,39 @@ public class Validator<T> {
         } else {
             throw new ValidationException(errors);
         }
+    }
+
+    /**
+     * Resolves an object's field by its name.
+     * @param name field name to search
+     * @return found field
+     * @throws NoSuchFieldException
+     */
+    private Field resolveField(String name) throws NoSuchFieldException {
+        Class<?> currentClass = object.getClass();
+
+        while (currentClass != null) {
+            try {
+                return currentClass.getDeclaredField(name);
+            } catch (NoSuchFieldException e) {
+                currentClass = currentClass.getSuperclass();
+            }
+        }
+
+        throw new NoSuchFieldException(name);
+    }
+
+    /**
+     * Reads the value of a field.
+     * @param name
+     * @return Object field's value
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
+    private Object readField(String name) throws NoSuchFieldException, IllegalAccessException {
+        Field field = resolveField(name);
+        field.setAccessible(true);
+
+        return field.get(object);
     }
 }
