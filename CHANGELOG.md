@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 This project follows semantic versioning.
 
+## [0.2.0] - 2026-09-08
+
+### Added
+
+- Field lookup through reflection, allowing validation with `field("name")` without passing the field value manually.
+- `notBlank()` validation for strings containing only whitespace.
+- Custom validation messages through `onFail(message)`.
+
+### Changed
+
+- `notEmpty()` now only checks whether a string is empty; blank-string validation is handled by `notBlank()`.
+- The `field(...)` API now receives the field name only.
+
 ## [0.1.1] - 2026-09-04
 
 ### Added

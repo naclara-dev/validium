@@ -27,6 +27,11 @@ public class FieldValidator<R> {
         this.fieldFound = fieldFound;
     }
 
+    /**
+     * Overrides the default validation error message with a custom text.
+     * @param message
+     * @return field validator for the selected field
+     */
     public FieldValidator<R> onFail(String message) {
         if (error != null) {
             error.setMessage(message);

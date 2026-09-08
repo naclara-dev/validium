@@ -4,13 +4,13 @@ import dev.naclara.validium.Validator;
 
 public class Main {
     static void main(String[] args) {
-        User user = new User("", 17);
+        User user = new User("", 18);
 
         Validator.of(user)
                 .field("name")
-                    .notEmpty().onFail("Custom Message!")
+                    .notEmpty()
                 .field("age")
-                    .min(18)
+                    .min(18).onFail("Custom Message!")
                 .validate();
 
     }

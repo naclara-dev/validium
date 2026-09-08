@@ -15,7 +15,7 @@ Validium is available on Maven Central. Add the dependency to your Maven project
 <dependency>
     <groupId>dev.naclara</groupId>
     <artifactId>validium</artifactId>
-    <version>0.1.1</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
@@ -29,10 +29,10 @@ public class Main {
         User user = new User("Ana", 22);
 
         Validator.of(user)
-                .field("name", user.getName())
+                .field("name")
                     .notEmpty()
                     .maxLength(100)
-                .field("age", user.getAge())
+                .field("age")
                     .min(18)
                 .validate();
     }
@@ -40,6 +40,18 @@ public class Main {
 ```
 
 When validation fails, `validate()` throws a `ValidationException` with the collected validation errors.
+
+Field values are located automatically by reflection using the field name. This also allows private fields to be validated without passing their values manually.
+
+Custom error messages can be defined for the preceding validation:
+
+```java
+Validator.of(user)
+        .field("name")
+            .notEmpty()
+            .onFail("Name is required!")
+        .validate();
+```
 
 ## Available validations
 
@@ -53,7 +65,8 @@ When validation fails, `validate()` throws a `ValidationException` with the coll
 
 | Validation | Description |
 | --- | --- |
-| `notEmpty()` | Fails when the string is empty or blank. |
+| `notEmpty()` | Fails when the string is empty. |
+| `notBlank()` | Fails when the string is empty or contains only whitespace. |
 | `minLength(size)` | Fails when the string length is lower than `size`. |
 | `maxLength(size)` | Fails when the string length is greater than `size`. |
 
