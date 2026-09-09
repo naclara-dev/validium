@@ -1,6 +1,9 @@
 package dev.naclara.validium;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
@@ -107,6 +110,34 @@ public class FieldValidator<R> {
         }
         if (value == null) {
             error = validator.addError(name, "Field is required.");
+        }
+
+        return this;
+    }
+
+    /**
+     * Validates that the field value is within the allowed values.
+     * @param values allowed values
+     * @return current field validator
+     */
+    public FieldValidator<R> in(R... values) {
+        if (!fieldFound || value == null) {
+            return this;
+        }
+        if (values == null) {
+            throw new IllegalArgumentException(String.format("List of allowed values for '%s' cannot be null.", name));
+        }
+
+        Boolean validated = false;
+
+        for (R val : values) {
+            if (Objects.equals(value, val)) {
+                validated = true;
+                break;
+            }
+        }
+        if (!validated) {
+            error = validator.addError(name, "Must be one of: " + Arrays.toString(values));
         }
 
         return this;
