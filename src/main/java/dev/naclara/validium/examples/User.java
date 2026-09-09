@@ -2,20 +2,12 @@ package dev.naclara.validium.examples;
 
 public class User {
     String name;
-    Integer age;
     String email;
+    Integer age;
+    String gender;
+    String bio;
+    String password;
 
-    public User(String name, Integer age, String email) {
-        this.name = name;
-        this.age = age;
-        this.email = email;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public Integer getAge() {
-        return this.age;
+    public User() {
     }
 }

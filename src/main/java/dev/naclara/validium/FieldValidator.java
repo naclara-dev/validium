@@ -137,7 +137,7 @@ public class FieldValidator<R> {
             }
         }
         if (!validated) {
-            error = validator.addError(name, "Must be one of: " + Arrays.toString(values));
+            error = validator.addError(name, "Must be one of " + Arrays.toString(values));
         }
 
         return this;
