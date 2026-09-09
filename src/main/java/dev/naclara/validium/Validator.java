@@ -12,6 +12,7 @@ import java.util.Objects;
  */
 public class Validator<T> {
     T object;
+    AnnotationValidator annotations;
     List<ValidationError> errors;
 
     /**
@@ -21,6 +22,7 @@ public class Validator<T> {
      */
     public Validator(T object) {
         this.object = object;
+        this.annotations = new AnnotationValidator(this);
         this.errors = new ArrayList<>();
     }
 
@@ -79,6 +81,8 @@ public class Validator<T> {
      * @throws ValidationException when one or more validation errors were collected
      */
     public Boolean validate() {
+        annotations.validate(object);
+
         if (errors.isEmpty()) {
             return true;
         } else {

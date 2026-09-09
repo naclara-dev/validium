@@ -120,7 +120,7 @@ public class FieldValidator<R> {
      * @param values allowed values
      * @return current field validator
      */
-    public FieldValidator<R> in(R... values) {
+    public FieldValidator<R> in(Object... values) {
         if (!fieldFound || value == null) {
             return this;
         }
@@ -130,7 +130,7 @@ public class FieldValidator<R> {
 
         Boolean validated = false;
 
-        for (R val : values) {
+        for (Object val : values) {
             if (Objects.equals(value, val)) {
                 validated = true;
                 break;
