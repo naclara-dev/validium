@@ -4,8 +4,7 @@ import dev.naclara.validium.annotation.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Validates object fields using runtime validation annotations.
@@ -36,9 +35,7 @@ public class AnnotationValidator {
      * @param object object whose fields should be validated
      */
     public void validate(Object object) {
-        Field[] fields = object.getClass().getDeclaredFields();
-
-        for (Field field : fields) {
+        for (Field field : getObjectFields(object)) {
             for (Annotation annotation : field.getAnnotations()) {
                 AnnotationHandler handler = handlers.get(annotation.annotationType());
 
@@ -48,6 +45,23 @@ public class AnnotationValidator {
                 }
             }
         }
+    }
+
+    /**
+     * Gets all fields of an object, including inherited fields.
+     * @param object
+     * @return list of fields
+     */
+    private List<Field> getObjectFields(Object object) {
+        List<Field> fields = new ArrayList<>();
+        Class<?> currentClass = object.getClass();
+
+        while (currentClass != null && currentClass != Object.class) {
+            fields.addAll(Arrays.asList(currentClass.getDeclaredFields()));
+            currentClass = currentClass.getSuperclass();
+        }
+
+        return fields;
     }
 
     /**
